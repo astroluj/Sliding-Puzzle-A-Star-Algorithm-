@@ -2,6 +2,7 @@ package com.example.mobilelap_01_calculator;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -24,15 +25,23 @@ public class MainActivity extends Activity {
     
     // 음수 클릭 이벤트
     public void unsignedClick (View v) {
-
-        if (v.getId () == R.id.btn_unsigned1)
+    	
+        if (v.getId () == R.id.btn_unsigned1) {
             // 공백이 아닐 때
-            if (!editNum1.getText().toString().equals(""))
+            if (!editNum1.getText().toString().equals("")) {
                 // 음수화
                 editNum1.setText (Double.parseDouble(editNum1.getText().toString()) *-1 +"") ;
-        else if (!editNum2.getText().toString().equals(""))
+                // 커서위치 맨뒤로
+                editNum1.setSelection(editNum1.length());
+            }
+            
+        }
+        else if (!editNum2.getText().toString().equals("")) {
              // 음수화
             editNum2.setText(Double.parseDouble(editNum2.getText().toString()) *-1 +"") ;
+            // 커서위치 맨뒤로
+            editNum1.setSelection(editNum1.length());
+        }
     }
 
     // Plsu Fuction

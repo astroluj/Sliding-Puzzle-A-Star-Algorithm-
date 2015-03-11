@@ -35,7 +35,6 @@
             android:layout_weight="60"
             android:gravity="center"
             android:inputType="number"
-            android:text="0"
             android:textSize="15dp" />
 
         <Button
@@ -58,7 +57,6 @@
         android:weightSum="100">
 
         <TextView
-
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="20"
@@ -73,7 +71,6 @@
             android:layout_weight="60"
             android:gravity="center"
             android:inputType="number"
-            android:text="0"
             android:textSize="15dp" />
 
         <Button
