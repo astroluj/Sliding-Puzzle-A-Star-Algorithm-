@@ -1,5 +1,6 @@
 package com.example.mobilelap_02_simpletour;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import android.widget.Toast;
 
 public class TourActivity extends ActionBarActivity {
 
-	private TextView idText, prevTourText ;
+	final int TOUR_VIEW_REQUEST_CODE =1 ;
+	
+	private TextView idText ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +23,13 @@ public class TourActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_tour);
 		
 		idText =(TextView) findViewById (R.id.tour_text_id) ;
-		prevTourText =(TextView) findViewById (R.id.tour_text_prev_tour) ;
+		
+		// 접속한 사람 보여주기
+		try {
+			idText.setText(getIntent ().getStringExtra("id") +" Tour!!!") ;
+		} catch (Exception e) {
+			idText.setText("Tour!!!") ;
+		}
 	}
 	
 	// Tour Click
@@ -56,8 +65,6 @@ public class TourActivity extends ActionBarActivity {
 			break ;
 		}
 		
-		prevTourText.setText (tourName) ;
-		
 		try {
 			Intent intent =new Intent (TourActivity.this, TourViewActivity.class) ;
 			intent.putExtra("latitude", latitude) ;
@@ -65,10 +72,21 @@ public class TourActivity extends ActionBarActivity {
 			intent.putExtra("tourName", tourName) ;
 			
 			// Intent Calls
-			startActivity(intent) ;
+			startActivityForResult (intent, TOUR_VIEW_REQUEST_CODE) ;
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(this, "Sorry", Toast.LENGTH_SHORT).show () ;
 		}
+	}
+	
+	@Override
+	protected void onActivityResult (int requestCode, int resultCode, Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent); 
+		
+		// Activity Complete Destory
+		if (resultCode == Activity.RESULT_OK) 
+			// InformationInput에서 호출한 경우에만 처리합니다.
+			if(requestCode == TOUR_VIEW_REQUEST_CODE)                
+				Toast.makeText(this, "방금까지 " +intent.getStringExtra("tourName") +"를 (을) 찾아 보았습니다." , Toast.LENGTH_LONG).show () ;
 	}
 	
 	@Override
@@ -76,13 +94,6 @@ public class TourActivity extends ActionBarActivity {
 		super.onWindowFocusChanged(hasFocus);
         
 		if (hasFocus) {
-			
-			// 접속한 사람 보여주기
-			try {
-				idText.setText(getIntent ().getStringExtra("id") +" Tour!!!") ;
-			} catch (Exception e) {
-				idText.setText("Tour!!!") ;
-			}
 		}
 	}
 	

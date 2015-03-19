@@ -1,8 +1,10 @@
 package com.example.mobilelap_02_simpletour;
 
- import android.location.Geocoder;
+import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,6 +44,7 @@ public class TourViewActivity extends FragmentActivity {
 		latLng =new LatLng (getIntent ().getDoubleExtra("latitude", 0), 
 				getIntent ().getDoubleExtra("longitude", 0)) ;
 		tourName =getIntent ().getStringExtra("tourName") ;
+		
 		// Set GoogleMap
 		googleMap = ((SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById (R.id.tour_view_map)).getMap () ;
@@ -54,6 +57,8 @@ public class TourViewActivity extends FragmentActivity {
 				setTourMarker (latLng) ;
 			}
 		});
+		// My Location
+		googleMap.setMyLocationEnabled(true) ;
 		// Initial Position
 		cameraPos = new CameraPosition.Builder ().target (latLng).zoom (ZOOM).build () ;
 		// Moved
@@ -75,6 +80,7 @@ public class TourViewActivity extends FragmentActivity {
 		try {
 			if (marker == null) marker =new MarkerOptions () ;
 			
+			// Coordination Convert to Address
 			try {
 				tourName =geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0).getAddressLine(0).toString() ;
 			} catch (Exception e) {
@@ -90,5 +96,21 @@ public class TourViewActivity extends FragmentActivity {
 			// Tour Info
 			setTourInfoText (latLng, tourName) ;
 		} catch (Exception e) {}
+	}
+	
+	@Override
+	public boolean onKeyDown (int keyCode, KeyEvent event) {
+
+		switch(keyCode){
+		case KeyEvent.KEYCODE_BACK :
+			// Set Intent
+			Intent intent =new Intent (TourViewActivity.this, TourActivity.class) ;
+			intent.putExtra("tourName", tourName) ;
+			
+			// Return Intent
+			setResult (RESULT_OK, getIntent ()) ;
+		}
+		
+		return super.onKeyDown(keyCode, event) ;
 	}
 }

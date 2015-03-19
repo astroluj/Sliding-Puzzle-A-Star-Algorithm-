@@ -26,6 +26,8 @@
             android:layout_weight="15"
             android:gravity="center"
             android:hint="User Id"
+            android:lines="1"
+            android:textIsSelectable="true"
             android:textSize="15dp" />
 
         <EditText
@@ -35,15 +37,17 @@
             android:layout_weight="15"
             android:gravity="center"
             android:hint="User Password"
+            android:inputType="textWebPassword"
+            android:lines="1"
             android:textSize="15dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_marginRight="15dp"
         android:layout_weight="40"
+        android:gravity="center"
         android:orientation="vertical"
         android:weightSum="100" >
 
@@ -51,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="30"
+            android:background="#ffffff05"
             android:gravity="center"
             android:onClick="loginClick"
             android:text="Login"

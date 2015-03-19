@@ -448,7 +448,7 @@ int id action_bar_root 0x7f0c0040
 int id action_bar_spinner 0x7f0c0002
 int id action_bar_subtitle 0x7f0c0033
 int id action_bar_title 0x7f0c0032
-int id action_calls 0x7f0c005f
+int id action_calls 0x7f0c005e
 int id action_context_bar 0x7f0c0046
 int id action_menu_divider 0x7f0c0005
 int id action_menu_presenter 0x7f0c0006
@@ -528,11 +528,10 @@ int id tour_btn_tour_01 0x7f0c0057
 int id tour_btn_tour_02 0x7f0c0058
 int id tour_btn_tour_03 0x7f0c0059
 int id tour_text_id 0x7f0c0056
-int id tour_text_prev_tour 0x7f0c005a
-int id tour_view_latitude 0x7f0c005c
-int id tour_view_longitude 0x7f0c005d
-int id tour_view_map 0x7f0c005e
-int id tour_view_tour_name 0x7f0c005b
+int id tour_view_latitude 0x7f0c005b
+int id tour_view_longitude 0x7f0c005c
+int id tour_view_map 0x7f0c005d
+int id tour_view_tour_name 0x7f0c005a
 int id up 0x7f0c0001
 int id useLogo 0x7f0c0027
 int id withText 0x7f0c002c
