@@ -54,8 +54,9 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="10dp"
             android:layout_weight="30"
-            android:background="#ffffff05"
+            android:background="@android:color/darker_gray"
             android:gravity="center"
             android:onClick="loginClick"
             android:text="Login"

@@ -24,10 +24,11 @@
         android:textSize="15dp" />
 
     <Button
+        android:layout_margin="10dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="30"
-        android:background="#ffffff05"
+        android:background="@android:color/darker_gray"
         android:gravity="center"
         android:onClick="callsClick"
         android:text="Calls"
