@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF000000"
+    tools:context="com.ai.slidingpuzzle.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/img_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
+    <RelativeLayout
+        android:id="@+id/info_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/img_layout" >
+
+        <EditText
+            android:id="@+id/cnt_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:hint="0"
+            android:enabled="false"
+            android:inputType="numberDecimal"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/cnt_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/cnt_edit"
+            android:gravity="center"
+            android:text="이동 횟수"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/user_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/info_layout" >
+
+        <ImageButton
+            android:id="@+id/hint_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="#000000"
+            android:onClick="hintClick"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/hint_selector" />
+
+        <ImageButton
+            android:id="@+id/solve_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="#000000"
+            android:onClick="solveClick"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/solve_selector" />
+
+        <ImageButton
+            android:id="@+id/size_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="#00000000"
+            android:onClick="sizeClick"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/size_selector" />
+
+        <ImageButton
+            android:id="@+id/shuffle_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="#000000"
+            android:onClick="shuffleClick"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/shuffle_selector" />
+
+        <ImageView
+            android:id="@+id/hint_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SlidingPuzzle</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="solve_recv">com.ai.solveAStar</string>
+    <string name="hint_recv">com.ai.hintAStar</string>
+    <string name="fail_recv">com.ai.failAStar</string>
+    <string name="size_recv">com.ai.boardSize</string>
+
+</resources>
