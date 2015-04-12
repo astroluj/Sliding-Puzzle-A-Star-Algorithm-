@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_interval"
+        android:title="Set LED Interval" 
+        android:orderInCategory="0"/>
+
+    <item 
+        android:id ="@+id/menu_expose"
+        android:title ="Set expose Contorl Enabled" 
+        android:orderInCategory="1" /> 
+    
+</menu>
