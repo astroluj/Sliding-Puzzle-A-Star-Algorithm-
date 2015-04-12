@@ -19,21 +19,27 @@ import android.view.ViewGroup.LayoutParams;
 
 //Camera SurfaceView
 public class CameraFace extends SurfaceView implements SurfaceHolder.Callback {
+	
+	private Context context ;
 	private SurfaceHolder nHolder;
-	private Camera camera = null;
+	private Camera camera ;
+	
 
-	public CameraFace(Context context) { // ������
+	public CameraFace(Context context, Camera camera) { // ������
 		super(context);
 
+		this.context = context ;
+		this.camera = camera ;
+		
 		nHolder = getHolder(); // callback���� �����Ȱ��� ������
 		nHolder.addCallback(this); // callback ȣ��
 		nHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 	}
 
-	// ó�� ī�޶� ȭ�� ������
+	// Camera Surface View
 	public void surfaceCreated(SurfaceHolder holder) {
 		camera = CameraFace.open(); // ����� ī�޶� ����
-		camera.setDisplayOrientation(90); // ���θ��� ������ 90ȸ��
+		camera.setDisplayOrientation(90); // 90도 회전
 		try {
 			camera.setPreviewDisplay(holder); // �̻������ ȭ�� ���
 			/*

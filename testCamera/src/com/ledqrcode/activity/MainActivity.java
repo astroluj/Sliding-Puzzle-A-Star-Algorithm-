@@ -44,14 +44,15 @@ public class MainActivity extends Activity {
 	private final int MIN_SECTOR =10, CAPTURE_TIME =35,
 			NONE =0, DRAG =1, ZOOM =2 ;	// clicked
 	private final int INTERVAL_RESULT_OK = 1, CAPTURE = 0 ;
+	private int INTERVAL =80 ;
 	
 	private TimerThread timerThread ;
 	private RectDraw rectD ;
-	private CameraFace camera ;
+	private CameraFace cameraFace ;
 	private Scale scale ;
 	
+	private Camera camera ;
 	
-	private int INTERVAL =80 ;
 	
 	
 	private ArrayList<Bitmap> img ;
@@ -73,6 +74,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// CameraFace init
+		cameraFace = new CameraFace (getApplicationContext(), camera) ;
 		
 		// Get Scale
 		DisplayMetrics disM =new DisplayMetrics () ;
@@ -97,14 +101,16 @@ public class MainActivity extends Activity {
 	// Capture STart
 	public void camera (View v)
 	{
-		CameraFace nCamera =new CameraFace (this) ;	// CameraFace init
-		setContentView (nCamera) ;	
+		setContentView (cameraFace) ;	
+		// starting Thread
+		startTimerThread () ;
 	}
 	
 	// Camera Preview Callback
-	protected Camera.PreviewCallback timerShutter = new Camera.PreviewCallback() {
+	private Camera.PreviewCallback timerShutter = new Camera.PreviewCallback() {
 		public void onPreviewFrame(byte[] data, Camera camera) {
 
+			// Data add
 			imgBytes.add(data);
 			captureCnt++;
 			captureTime.add(System.currentTimeMillis()); // �� ���� ���� ����
