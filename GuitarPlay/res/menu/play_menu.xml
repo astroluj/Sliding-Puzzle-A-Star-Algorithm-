@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_play"
+        android:title="연주 시작"/>
+    <item
+        android:title="기타 주법">
+        <menu>
+            <item
+                android:id="@+id/menu_arpeggio"
+                android:title="아르페지오"/>
+            <item
+                android:id="@+id/menu_stroke"
+                android:title="스트로크"/>
+        </menu>
+    </item>
+
+    <item 
+        android:id ="@+id/menu_carpo"
+        android:title ="카포 사용"  />
+</menu>
