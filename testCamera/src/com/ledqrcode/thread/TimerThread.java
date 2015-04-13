@@ -5,13 +5,17 @@ import android.os.Handler;
 
 public class TimerThread extends Thread {
 
-	private boolean runFlag ;
 	private Handler handler;
+	
+	private boolean runFlag ;
+	private long SLEEP = 1 ;
+	
 
-	public TimerThread(Handler handler) {
+	public TimerThread(Handler handler, long SLEEP) {
 		runFlag = false;
 
 		this.handler = handler;
+		this.SLEEP = SLEEP ;
 	}
 
 	public void run() {
@@ -19,9 +23,9 @@ public class TimerThread extends Thread {
 		try {
 			while (runFlag && !isInterrupted()) {
 				try {
-					// Capture
-					sleep(10);
 					handler.sendEmptyMessage(0);
+					// Capture
+					sleep(SLEEP);
 				} catch (Exception e) {}
 			}
 		} catch (Exception e) {}

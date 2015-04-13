@@ -1,4 +1,4 @@
-package com.ledqrcode.camera;
+package com.ledqrcode.contentview;
 
 import java.io.IOException;
 

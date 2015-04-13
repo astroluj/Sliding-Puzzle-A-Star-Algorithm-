@@ -1,4 +1,4 @@
-package com.ledqrcode.camera;
+package com.ledqrcode.contentview;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -20,30 +20,42 @@ import android.util.Log;
 import android.view.View;
 
 public class RectDraw extends View {
-	
-	private Coordinate leftTopCoordinate, rightBottomCoordinate ;
-	private Scale scale ;
+
+	private final int MIN_SECTOR = 10;
+
+	private Coordinate leftTopCoordinate, rightBottomCoordinate;
+	private Scale scale;
+
+	private ArrayList<Bitmap> img ;
+	private ArrayList<Long> captureTime;
+	private ArrayList<Integer> acii_str;
+
+	private String textLED ;
 	
 	public RectDraw(Context context, Scale scale) {
-		
+
 		super(context);
+
+		this.scale = scale;
+		this.leftTopCoordinate = new Coordinate();
+		this.rightBottomCoordinate = new Coordinate();
+
+		img =new ArrayList <Bitmap> () ;
+		captureTime =new ArrayList <Long> () ;
+		acii_str =new ArrayList <Integer> () ;
 		
-		this.scale = scale ;
-		this.leftTopCoordinate = new Coordinate () ;
-		this.rightBottomCoordinate = new Coordinate () ;
-		
+		textLED ="" ;
 	}
-	
+
 	// LED Table Drawing
 	public void onDrawTable(Bitmap img) {
-		int imageWidth = img.getWidth() / 4,
-				imageHeight = img.getHeight() / 4;
+		int imageWidth = img.getWidth() / 4, imageHeight = img.getHeight() / 4;
 		byte aciiValue = 0x00;
 
 		int aciiValue_1 = 0, aciiValue_2 = 0;
 
 		Canvas canvas = new Canvas(img);
-		//canvas.setBitmap(img);
+		// canvas.setBitmap(img);
 
 		Paint paint = new Paint();
 		paint.setStrokeWidth(2);
@@ -93,7 +105,7 @@ public class RectDraw extends View {
 	// Drawing Rectangle
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		
+
 		Paint paint = new Paint();
 		paint.setStrokeWidth(2);
 		paint.setStyle(Paint.Style.STROKE);
@@ -101,26 +113,28 @@ public class RectDraw extends View {
 
 		// Draw Rectangle
 		canvas.drawRect(leftTopCoordinate.getX(), leftTopCoordinate.getY(),
-				rightBottomCoordinate.getX(), rightBottomCoordinate.getY(), paint);
+				rightBottomCoordinate.getX(), rightBottomCoordinate.getY(),
+				paint);
 
 		paint.setTextSize(20);
-		canvas.drawText("Left : " + leftTopCoordinate.getX() 
-				+ " Top : " + leftTopCoordinate.getY() 
-				+ " Right : " + rightBottomCoordinate.getX()
-				+ " Bottom : " + rightBottomCoordinate.getY(), 
-				20, 20, paint);
+		canvas.drawText("Left : " + leftTopCoordinate.getX() + " Top : "
+				+ leftTopCoordinate.getY() + " Right : "
+				+ rightBottomCoordinate.getX() + " Bottom : "
+				+ rightBottomCoordinate.getY(), 20, 20, paint);
 		canvas.drawText(
-				"width : " + Math.abs(leftTopCoordinate.getX() - rightBottomCoordinate.getX()) 
-				+ " height : " + Math.abs(leftTopCoordinate.getY() - rightBottomCoordinate.getY()), 
-				20, 40, paint);
+				"width : "
+						+ Math.abs(leftTopCoordinate.getX()
+								- rightBottomCoordinate.getX())
+						+ " height : "
+						+ Math.abs(leftTopCoordinate.getY()
+								- rightBottomCoordinate.getY()), 20, 40, paint);
 
 		paint.setTextSize(30);
 		paint.setTextAlign(Paint.Align.CENTER);
-		canvas.drawText(textLED, 
-				scale.getScaleWidht() / 2, 600, paint);
+		canvas.drawText(textLED, scale.getScaleWidht() / 2, 600, paint);
 	}
 
-	private void setRepeatAcii() {
+	public void setRepeatAcii() {
 		String tempStr = "";
 
 		Log.d("AAA", textLED);
@@ -155,7 +169,7 @@ public class RectDraw extends View {
 		textLED += tempStr;
 	}
 
-	private void sortInterval() {
+	public void sortInterval() {
 
 		long firstTime = captureTime.get(0);
 
@@ -190,74 +204,75 @@ public class RectDraw extends View {
 		imgBytes.removeAll(imgBytes);
 		img.removeAll(img);
 	}
-	
+
 	// ReadImage
-		private void readImage() {
-			// 캡쳐 멈춤
-			camera.stopPreview();
-			camera.setOneShotPreviewCallback(null);
-			camera.startPreview(); // View 깜빡임 효과
+	public void ImageAnalyze() {
+		// 캡쳐 멈춤
+		camera.stopPreview();
+		camera.setOneShotPreviewCallback(null);
+		camera.startPreview(); // View 깜빡임 효과
 
-			// 현재 카메라가 차지하는 크기
-			Camera.Parameters params = camera.getParameters();
-			int cameraWidth = params.getPreviewSize().width, 
-					cameraHeight = params.getPreviewSize().height, 
-					cameraFormat = params.getPreviewFormat();
-			float width = Math.abs(x_1 - x_2), height = Math.abs(y_1 - y_2);
+		// 현재 카메라가 차지하는 크기
+		Camera.Parameters params = camera.getParameters();
+		int cameraWidth = params.getPreviewSize().width, cameraHeight = params
+				.getPreviewSize().height, cameraFormat = params
+				.getPreviewFormat();
+		float width = Math.abs(x_1 - x_2), height = Math.abs(y_1 - y_2);
 
-			// Create Rectangle
-			x_1 = Math.min(x_1, x_2);
-			y_1 = Math.min(y_1, y_2);
+		// Create Rectangle
+		x_1 = Math.min(x_1, x_2);
+		y_1 = Math.min(y_1, y_2);
 
-			Rect area = new Rect(0, 0, cameraWidth, cameraHeight);
-			YuvImage yuv;
+		Rect area = new Rect(0, 0, cameraWidth, cameraHeight);
+		YuvImage yuv;
 
-			Log.i("size", "captureCnt : " + captureCnt + " imgBytes.size : "
-					+ imgBytes.size() + " captureTime.size : " + captureTime.size());
-			for (int i = 0, delCnt = 0; i < captureCnt; i++) {
-				Bitmap tempImg;
+		Log.i("size", "captureCnt : " + captureCnt + " imgBytes.size : "
+				+ imgBytes.size() + " captureTime.size : " + captureTime.size());
+		for (int i = 0, delCnt = 0; i < captureCnt; i++) {
+			Bitmap tempImg;
 
-				// prieview Capture Image to YuvImage
-				yuv = new YuvImage(imgBytes.get(i), cameraFormat, cameraWidth,
-						cameraHeight, null);
+			// prieview Capture Image to YuvImage
+			yuv = new YuvImage(imgBytes.get(i), cameraFormat, cameraWidth,
+					cameraHeight, null);
 
-				ByteArrayOutputStream outByte = new ByteArrayOutputStream();
-				yuv.compressToJpeg(area, 100, outByte);
+			ByteArrayOutputStream outByte = new ByteArrayOutputStream();
+			yuv.compressToJpeg(area, 100, outByte);
 
-				tempImg = BitmapFactory.decodeByteArray(outByte.toByteArray(), 0,
-						outByte.size());
+			tempImg = BitmapFactory.decodeByteArray(outByte.toByteArray(), 0,
+					outByte.size());
 
-				Matrix m = new Matrix();
-				m.postRotate(90); // 90도 회전
-				tempImg = Bitmap.createBitmap(tempImg, 0, 0, tempImg.getWidth(),
-						tempImg.getHeight(), m, true); // ȸ��
-				tempImg = Bitmap.createBitmap(tempImg,
-						(int) (x_1 * tempImg.getWidth() / scaleWidth), (int) (y_1
-								* tempImg.getHeight() / scaleHeight), (int) (width
-								* tempImg.getWidth() / scaleWidth), (int) (height
-								* tempImg.getHeight() / scaleHeight)); // �ػ󵵷� �߶�
+			Matrix m = new Matrix();
+			m.postRotate(90); // 90도 회전
+			tempImg = Bitmap.createBitmap(tempImg, 0, 0, tempImg.getWidth(),
+					tempImg.getHeight(), m, true); // ȸ��
+			tempImg = Bitmap.createBitmap(tempImg,
+					(int) (x_1 * tempImg.getWidth() / scaleWidth), (int) (y_1
+							* tempImg.getHeight() / scaleHeight), (int) (width
+							* tempImg.getWidth() / scaleWidth), (int) (height
+							* tempImg.getHeight() / scaleHeight)); // �ػ󵵷� �߶�
 
-				rectD.onDrawTable(tempImg); // img 그리기
+			rectD.onDrawTable(tempImg); // img 그리기
 
-				if (!rectD.getEmptyFlag())
-					img.add(tempImg); // ���� �׸��� �ƴϸ� �߰�
+			if (!rectD.getEmptyFlag())
+				img.add(tempImg); // ���� �׸��� �ƴϸ� �߰�
 
-				else {
-					captureTime.remove(i - delCnt++); // ���� �׸��� ��� ����
-					rectD.setEmptryFlag(false);
-				}
-
+			else {
+				captureTime.remove(i - delCnt++); // ���� �׸��� ��� ����
+				rectD.setEmptryFlag(false);
 			}
-			x_1 = x_2 = y_1 = y_2 = 0; // 좌표 초기화
+
 		}
+		x_1 = x_2 = y_1 = y_2 = 0; // 좌표 초기화
+	}
+
 	// Get LED State
 	private boolean comparePixel(int y, int height, int x, int width, Bitmap img) {
 		int colorCnt = 0;
 		int redSector, greenSector, blueSector;
 
 		// LED Color Example Yellow
-		for (int i = y ; i < height ; i++) {
-			for (int j = x ; j < width ; j++) {
+		for (int i = y; i < height; i++) {
+			for (int j = x; j < width; j++) {
 				// RGB Selector
 				redSector = (img.getPixel(j, i) & 0x00ff0000) >> 16;
 				greenSector = (img.getPixel(j, i) & 0x0000ff00) >> 8;
@@ -285,7 +300,7 @@ public class RectDraw extends View {
 				}
 			}
 		}
-		
+
 		return true;
 	}
 }

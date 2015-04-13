@@ -1,49 +1,30 @@
 package com.ledqrcode.activity;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.ledqrcode.R;
 import com.ledqrcode.basic.Coordinate;
 import com.ledqrcode.basic.Scale;
-import com.ledqrcode.camera.CameraFace;
-import com.ledqrcode.camera.RectDraw;
+import com.ledqrcode.contentview.CameraFace;
+import com.ledqrcode.contentview.RectDraw;
 import com.ledqrcode.thread.TimerThread;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
 	private final int NONE =0, DRAG =1, ZOOM =2 ;	// Touch
-	private final int MIN_SECTOR =10, CAPTURE_TIME =35 ;
+	private final int MAX_ASCII =10 ;
 	private final int INTERVAL_RESULT_OK = 1, CAPTURE = 0 ;
 	
 	// LED Interval
@@ -56,15 +37,9 @@ public class MainActivity extends Activity {
 	private Coordinate leftTopCoordinate, rightBottomCoordinate ;
 
 	private Camera camera ;
+	private ArrayList<byte[]> imgBytes;
 	
-	private ArrayList<Bitmap> img ;
-	private ArrayList <byte []> imgBytes ;
-	private ArrayList <Long> captureTime ;
-	private ArrayList <Integer> acii_str ;
-
-	private String textLED ;
 	private boolean dragFlag, exposeMenuFlag ;	
-	private int captureCnt ;
 	private int mode = NONE ;
 	private long captureStartTime  ;
 	
@@ -86,16 +61,12 @@ public class MainActivity extends Activity {
 		cameraFace = new CameraFace (getApplicationContext(), camera, rectDraw) ;
 		
 		// init
-		img =new ArrayList <Bitmap> () ;
-		imgBytes =new ArrayList <byte []> () ;
-		captureTime =new ArrayList <Long> () ;
-		acii_str =new ArrayList <Integer> () ;
 		
-		textLED ="" ;
+		imgBytes =new ArrayList <byte []> () ;
+		
 		dragFlag =false ;
 		exposeMenuFlag =false ;
 		
-		captureCnt =0 ;
 		captureStartTime =0 ;
 	}
 	
@@ -105,7 +76,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void startTimerThread () {
-		timerThread =new TimerThread (timerHandlerCallback) ;
+		timerThread =new TimerThread (timerHandlerCallback, (long)INTERVAL / 10) ;
 		timerThread.setDaemon(true) ;
 		timerThread.setRun(true);
 		timerThread.start() ;
@@ -158,17 +129,15 @@ public class MainActivity extends Activity {
 
 			// Data add
 			imgBytes.add(data);
-			captureCnt++;
-			captureTime.add(System.currentTimeMillis()); // �� ���� ���� ����
-															// ���� ���
 
-			if (System.currentTimeMillis() - captureStartTime >= INTERVAL
-					* CAPTURE_TIME
-					&& timerThread.getRun()) {
-				timerThread.setRun(false);
+			// Inteval Max Capture 10, Max Ascii 10
+			if (timerThread != null 
+					&& (System.currentTimeMillis() - captureStartTime) >= (INTERVAL * MAX_ASCII)) {
+				// Release Thread
+				releaseTimerThread();
 
-				readImgAcii(); // Read LED QRCode Data
-				sortInterval(); // Data Analyze
+				rectDraw.ImageAnalyze(); // Read LED QRCode Data
+				rectDraw.sortInterval(); // Data Analyze
 			}
 		}
 	};
@@ -231,10 +200,6 @@ public class MainActivity extends Activity {
 				dragFlag = false ;
 				
 				// Capture
-				captureCnt = 0;
-
-				textLED = "";
-				
 				// starting Thread
 				if (timerThread == null)
 					startTimerThread () ;
