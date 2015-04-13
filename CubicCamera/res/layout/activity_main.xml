@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:background="#fff5f5dc"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5" >
+        
+        <ImageButton
+            android:layout_width ="match_parent"
+            android:layout_height ="match_parent"
+            android:background="@drawable/camera_selector"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:onClick ="cameraClick" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4" >
+        
+        <ImageButton
+            android:layout_width ="match_parent"
+            android:layout_height ="match_parent"
+            android:background="@drawable/album_selector"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:onClick ="albumClick" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </RelativeLayout>
+
+</LinearLayout>

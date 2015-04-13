@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff5f5dc"
+    android:orientation="vertical"
+    android:weightSum="10" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9" >
+
+        <GridView
+            android:id="@+id/album_gridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp" >
+        </GridView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:id="@+id/album_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ff000000"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="10" >
+
+            <Button
+                android:id="@+id/album_delete"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:adjustViewBounds="true"
+                android:background="#ff000000"
+                android:onClick="deleteClick"
+                android:scaleType="fitXY"
+                android:text="Delete"
+                android:textColor="#ffffffff" />
+
+            <Button
+                android:id="@+id/album_add"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:adjustViewBounds="true"
+                android:background="#ff000000"
+                android:onClick="addClick"
+                android:scaleType="fitXY"
+                android:text="Add"
+                android:textColor="#ffffffff" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
